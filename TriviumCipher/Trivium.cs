@@ -87,31 +87,20 @@ namespace TriviumCipher
         public BitArray Encrypt(BitArray source)
         {
             Init();
-            BitArray res = new BitArray(source.Length);
-            BitArray keyStream = GenerateKeyStream(source.Length);
-            for (int i = 0; i < source.Length; ++i)
-            {
-                res[i] = source[i] ^ keyStream[i];
-            }
-            return res;
+            return source.Xor(GenerateKeyStream(source.Length));
         }
 
         public BitArray Decrypt(BitArray source)
         {
-            Init();
-            BitArray res = new BitArray(source.Length);
-            BitArray keyStream = GenerateKeyStream(source.Length);
-            for (int i = 0; i < source.Length; ++i)
-            {
-                res[i] = source[i] ^ keyStream[i];
-            }
-            return res;
+            return Encrypt(source);
         }
 
         private BitArray ArrayRightShift(BitArray array, bool val)
         {
-            BitArray res = new BitArray(array.Length);
-            res[0] = val;
+            BitArray res = new BitArray(array.Length)
+            {
+                [0] = val
+            };
             for (int i = 1; i < array.Length; ++i)
             {
                 res[i] = array[i - 1];
